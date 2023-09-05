@@ -7,6 +7,17 @@ import ContactList from './ContactList/ContactList';
 export class App extends Component {
   state = { contacts: [], filter: '' };
 
+  componentDidMount() {
+    const storageContacts = localStorage.getItem('contacts');
+    storageContacts && this.setState({ contacts: JSON.parse(storageContacts) });
+  }
+
+  componentDidUpdate(prevState) {
+    if (prevState.contact !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   onDeleteContact = id => {
     this.setState(prevState => {
       return {
