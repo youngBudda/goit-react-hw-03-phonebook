@@ -28,15 +28,17 @@ export class App extends Component {
 
   onAddContact = contactData => {
     const checkedContact = this.state.contacts.find(
-      contact => contactData.name === contact.name
+      contact => contactData.name.toLowerCase() === contact.name.toLowerCase()
     );
     if (checkedContact) {
       alert(`${contactData.name} is already in contacts}`);
       return;
-    } else {
-      const contact = { id: nanoid(), ...contactData };
-      this.setState({ contacts: [contact, ...this.state.contacts] });
     }
+    this.setState(prevState => {
+      const contact = { id: nanoid(), ...contactData };
+      const updatedContacts = [contact, ...prevState.contacts];
+      return { contacts: updatedContacts };
+    });
   };
   onFilter = filterData => {
     this.setState({ filter: filterData });
